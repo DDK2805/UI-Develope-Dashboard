@@ -1,0 +1,294 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Arial', sans-serif;
+  overflow: hidden;
+}
+
+.app-container {
+  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a4b4b 25%, #2a1a4a 50%, #4a2a6a 75%, #0a0a0a 100%);
+  padding: clamp(16px, 2vw, 24px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated background overlay */
+.app-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(233, 30, 99, 0.1) 0%, transparent 50%);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.content-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  height: calc(100vh - clamp(32px, 4vw, 48px));
+  border: 2px solid #e91e63;
+  border-radius: 8px;
+  padding: clamp(32px, 5vw, 64px);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  backdrop-filter: blur(10px);
+}
+
+/* Animated border glow */
+.content-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 8px;
+  padding: 2px;
+  background: linear-gradient(45deg, #e91e63, #9c27b0, #673ab7, #e91e63);
+  background-size: 300% 300%;
+  animation: borderGlow 4s ease-in-out infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: exclude;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+}
+
+@keyframes borderGlow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.content-wrapper.loaded {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.assignment-badge {
+  background: linear-gradient(90deg, #f5a623 0%, #f5a623 100%);
+  color: #000000;
+  font-weight: bold;
+  font-size: clamp(10px, 1vw, 12px);
+  padding: clamp(6px, 1vw, 8px) clamp(12px, 2vw, 16px);
+  border-radius: 6px;
+  display: inline-block;
+  letter-spacing: 0.5px;
+  margin-bottom: clamp(24px, 4vh, 48px);
+  width: fit-content;
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: slideInDown 0.8s ease-out 0.3s forwards;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Badge shimmer effect */
+.assignment-badge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transition: left 0.5s;
+}
+
+.assignment-badge:hover::before {
+  left: 100%;
+}
+
+.assignment-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(245, 166, 35, 0.4);
+}
+
+@keyframes slideInDown {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.main-heading {
+  color: #ffffff;
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -1px;
+  margin-bottom: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: default;
+}
+
+.heading-line {
+  display: inline-block;
+  opacity: 0;
+  transform: translateX(-50px);
+  animation: slideInLeft 0.8s ease-out forwards;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.heading-line:first-child {
+  animation-delay: 0.6s;
+}
+
+.heading-line:last-child {
+  animation-delay: 0.9s;
+}
+
+/* Text glow effect on hover */
+.heading-line:hover {
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  transform: translateX(5px);
+}
+
+@keyframes slideInLeft {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.company-section {
+  margin-top: auto;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideInUp 0.8s ease-out 1.2s forwards;
+}
+
+@keyframes slideInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.company-label {
+  color: #8e8e93;
+  font-size: clamp(12px, 1.2vw, 14px);
+  font-weight: 500;
+  letter-spacing: 2px;
+  margin-bottom: clamp(6px, 1vh, 8px);
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.company-label:hover {
+  color: #e91e63;
+  letter-spacing: 3px;
+}
+
+.company-name {
+  color: #ffffff;
+  font-size: clamp(16px, 1.8vw, 20px);
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  cursor: default;
+  position: relative;
+}
+
+.company-name:hover {
+  color: #e91e63;
+  letter-spacing: 1px;
+}
+
+/* Floating particles animation */
+.app-container::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #e91e63;
+  border-radius: 50%;
+  top: 20%;
+  left: 10%;
+  animation: float 6s ease-in-out infinite;
+  box-shadow: 
+    100px 200px 0 #9c27b0,
+    200px 100px 0 #673ab7,
+    300px 300px 0 #e91e63,
+    -100px 150px 0 #9c27b0,
+    -200px 250px 0 #673ab7;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+/* Pulse animation for interactive elements */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Add subtle breathing animation to the main container */
+.content-wrapper.loaded {
+  animation: breathe 4s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+/* Additional responsive breakpoints */
+@media (max-width: 1024px) and (max-height: 768px) {
+  /* Laptops with smaller screens */
+  .main-heading {
+    font-size: clamp(36px, 6vw, 72px);
+  }
+  .content-wrapper {
+    padding: clamp(24px, 3vw, 48px);
+  }
+}
+
+@media (max-width: 768px) {
+  .main-heading {
+    font-size: clamp(32px, 8vw, 56px);
+  }
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 12px;
+  }
+  .content-wrapper {
+    padding: 20px;
+  }
+  .main-heading {
+    font-size: clamp(28px, 10vw, 40px);
+    line-height: 1.1;
+  }
+}
+
+/* For very small screens */
+@media (max-width: 320px) {
+  .main-heading {
+    font-size: 24px;
+    line-height: 1.2;
+  }
+}
